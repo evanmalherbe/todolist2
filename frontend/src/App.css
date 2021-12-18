@@ -1,0 +1,100 @@
+/* Styles for To do list task - Level 2 - task 10 - Compulsory task 2 */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.app h2 {
+  margin-left: 1rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+/* Heading tag for to do list*/
+.toDoDiv h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: green;
+}
+
+/* Header for page. Position elements on page with Flexbox */
+.header {
+  background-color: white;
+  height: 5rem;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: black;
+
+  border-bottom: 1px solid #dedede;
+}
+
+.header h1 {
+  margin-left: 1rem;
+  width: 15rem;
+  min-width: 15rem;
+}
+
+.logoImg {
+  height: 3rem;
+  margin-left: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+
+  /* border: 1px solid red; */
+
+  padding: 1rem;
+  width: 60rem;
+}
+
+.form {
+  flex: 1;
+  border: 1px solid #dedede;
+  width: 30rem;
+  margin: 1rem;
+  
+  padding: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 0.5rem;
+}
+
+.loginFormGroup {
+  display: flex;
+  flex-direction: row;
+}
+
+.form-group Button {
+  margin-top: 0.5rem;
+}
+
+.list {
+  flex: 1;
+  width: 30rem;
+  padding: 0.5rem;
+
+  border: 1px solid #dedede;
+}
+
+/* Styles for to do list container */
+.toDoDiv {
+  display: flex;
+  flex-direction: column;
+ 
+
+  width: 50%;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem 2rem 2rem 2rem;
+
+}
+
+
+
