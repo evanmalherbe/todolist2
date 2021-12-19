@@ -5,15 +5,24 @@ const jwt = require("jsonwebtoken");
 // import mongoose
 const mongoose = require("mongoose");
 
+const path = require("path");
+
 const app = express();
 
 // Use bodyparser
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// view engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
+app.use(express.static(path.join(__dirname, "public")));
+
 //Import routes
 require("./routes/display.js")(app);
 require("./routes/add.js")(app);
+require("./routes/delete.js")(app);
 
 app.post("/login", (req, res) => {
   const usr = req.body.username;

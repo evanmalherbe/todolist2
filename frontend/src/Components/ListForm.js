@@ -6,58 +6,6 @@ import Button from "react-bootstrap/Button";
 
 /* Create class component*/
 function ListForm(props) {
-  // // Function to store list item to be added in state
-  // handleAddChange(event) {
-  //   this.setState({
-  //     addItem: event.target.value,
-  //   });
-  // }
-
-  // // Function to store list item to be deleted in state
-  // handleDeleteChange(event) {
-  //   this.setState({
-  //     deleteItem: event.target.value,
-  //   });
-  // }
-
-  // // Function to add list item to array
-  // addListItem(event) {
-  //   // Checks that input field is not empty
-  //   if (this.state.addItem !== "") {
-  //     // Adds item to array
-  //     this.state.listArray.push(this.state.addItem);
-
-  //     /* Resets state so that it updates to do list immediately. I learned to do this here:
-  //           https://www.pluralsight.com/guides/add-data-into-an-array-in-a-state-object
-  //           https://pretagteam.com/question/react-setstate-not-updating-state-value */
-  //     this.setState({ listArray: this.state.listArray });
-  //   }
-  // }
-
-  // // Function to delete list item from array
-  // deleteListItem(event) {
-  //   // Check that input field is not empty
-  //   if (this.state.deleteItem !== "") {
-  //     // Iterate through array
-  //     for (let i = 0; i <= this.state.listArray.length - 1; i++) {
-  //       // If item to be deleted matches an item in the array, then continue
-  //       if (this.state.listArray[i] === this.state.deleteItem) {
-  //         // Remove array item from position "i"
-  //         this.state.listArray.splice(i, 1);
-
-  //         /* Resets state so that it updates to do list immediately. I learned to do this here:
-  //                    https://www.pluralsight.com/guides/add-data-into-an-array-in-a-state-object
-  //                    https://pretagteam.com/question/react-setstate-not-updating-state-value */
-  //         this.setState({ listArray: this.state.listArray });
-  //         // Create alert to tell user the item has been deleted.
-  //         alert("List item '" + this.state.deleteItem + "' deleted.");
-  //       }
-  //     }
-  //   }
-  // }
-
-  // Render page elements
-
   return (
     <div className="form">
       {/* Create form for adding or deleting items.Includes onChange and onClick events to handle user 
@@ -73,7 +21,7 @@ function ListForm(props) {
             className="addItemInput"
             name="toAdd"
             placeholder="..."
-            onChange={props.handleListItem}
+            onChange={props.handleItemToAdd}
           />{" "}
           <Button variant="primary" onClick={props.handleAddItem}>
             Add item
@@ -87,10 +35,10 @@ function ListForm(props) {
             className="deleteItemInput"
             name="toDelete"
             placeholder="..."
-            onChange={props.handleDeleteChange}
+            onChange={props.handleItemToDelete}
           />
 
-          <Button variant="primary" onClick={props.deleteListItem}>
+          <Button variant="primary" onClick={props.handleDeleteItem}>
             Delete item
           </Button>
         </div>

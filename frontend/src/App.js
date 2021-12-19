@@ -23,19 +23,31 @@ class App extends React.Component {
       isLoaded: false,
       items: [],
       item: "",
+      itemToDelete: "",
     };
 
     this.handleUsername = this.handleUsername.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
 
-    this.handleListItem = this.handleListItem.bind(this);
+    this.handleItemToDelete = this.handleItemToDelete.bind(this);
+    this.handleItemToAdd = this.handleItemToAdd.bind(this);
     this.handleAddItem = this.handleAddItem.bind(this);
+    this.handleDeleteItem = this.handleDeleteItem.bind(this);
 
     this.reloadList = this.reloadList.bind(this);
   }
 
-  handleListItem(event) {
+  handleItemToDelete(event) {
+    this.setState(
+      {
+        itemToDelete: event.target.value,
+      },
+      () => console.log("Item to delete saved: " + this.state.itemToDelete)
+    );
+  }
+
+  handleItemToAdd(event) {
     this.setState(
       {
         item: event.target.value,
@@ -92,6 +104,41 @@ class App extends React.Component {
         }
       );
     // End of handleaddcar function
+  }
+
+  handleDeleteItem() {
+    fetch("/delete", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // Send new url in body of request
+      body: JSON.stringify({
+        item: this.state.itemToDelete,
+      }),
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState(
+            {
+              isLoaded: false,
+            },
+            () => {
+              console.log(
+                "Post request to delete list item sent. " + result.message
+              );
+              this.reloadList();
+            }
+          );
+        },
+        (error) => {
+          this.setState({
+            isLoaded: false,
+            error,
+          });
+        }
+      );
   }
 
   handleAddItem() {
@@ -198,7 +245,9 @@ class App extends React.Component {
           <div className="row">
             <ListForm
               handleAddItem={this.handleAddItem}
-              handleListItem={this.handleListItem}
+              handleItemToAdd={this.handleItemToAdd}
+              handleDeleteItem={this.handleDeleteItem}
+              handleItemToDelete={this.handleItemToDelete}
             />
             <DisplayList listItems={items} />
           </div>
