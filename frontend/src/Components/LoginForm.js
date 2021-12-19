@@ -14,7 +14,9 @@ import "../App.css";
 function LoginForm(props) {
   return (
     <div className="loginFormDiv">
-      <Form>
+      {/* Learned how to turn autocomplete off here: 
+      https://reactgo.com/react-turn-off-autocomplete/ */}
+      <Form autoComplete="off">
         <Row>
           <Col>
             <FormLabel> Username: </FormLabel>

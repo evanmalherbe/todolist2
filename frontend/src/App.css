@@ -11,6 +11,10 @@ body {
   font-weight: bold;
 }
 
+.redPara {
+  color: red;
+}
+
 /* Heading tag for to do list*/
 .toDoDiv h1 {
   margin: 0;
@@ -40,6 +44,11 @@ body {
 .logoImg {
   height: 3rem;
   margin-left: 1rem;
+}
+
+.loggedInMsg {
+  margin-left: auto;
+  margin-right: 1rem;
 }
 
 .row {

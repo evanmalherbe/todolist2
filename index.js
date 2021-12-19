@@ -23,25 +23,7 @@ app.use(express.static(path.join(__dirname, "public")));
 require("./routes/display.js")(app);
 require("./routes/add.js")(app);
 require("./routes/delete.js")(app);
-
-app.post("/login", (req, res) => {
-  const usr = req.body.username;
-  const pwd = req.body.password;
-  if (usr === "evan" && pwd === "jinnscir") {
-    payload = {
-      name: usr,
-      admin: true,
-    };
-
-    const token = jwt.sign(JSON.stringify(payload), "jwt-secret", {
-      algorithm: "HS256",
-    });
-
-    res.send({ message: token });
-  } else {
-    res.status(403).send({ message: "Incorrect login!" });
-  }
-});
+require("./routes/login.js")(app);
 
 app.get("/data", function (req, res) {
   res.send({ message: "Hello World!" });
@@ -53,10 +35,10 @@ app.get("/resource", (req, res) => {
   try {
     const decoded = jwt.verify(token, "jwt-secret");
     res.send({
-      message: `Hello, ${decoded.name}! Your JSON Web Token has been verified.`,
+      message: `Success, ${decoded.name}! Your JSON Web Token has been verified.`,
     });
   } catch (err) {
-    res.status(401).send({ message: "Bad JWT!" });
+    res.status(401).send({ message: "Invalid token" });
   }
 });
 

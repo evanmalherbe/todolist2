@@ -24,6 +24,8 @@ class App extends React.Component {
       items: [],
       item: "",
       itemToDelete: "",
+      loggedIn: false,
+      message: "",
     };
 
     this.handleUsername = this.handleUsername.bind(this);
@@ -71,13 +73,46 @@ class App extends React.Component {
     });
   }
 
+  handleAuth(token) {
+    fetch("/resource", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState(
+            {
+              isLoaded: false,
+              message: result.message,
+              loggedIn: true,
+            },
+            () => {
+              console.log("Result of auth: " + this.state.message);
+              this.reloadList();
+            }
+          );
+        },
+        (error) => {
+          this.setState({
+            isLoaded: false,
+            error,
+          });
+        }
+      );
+    // End of handleauth function
+  }
+
   handleLogin(event) {
     fetch("/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      // Send new url in body of request
+
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
@@ -93,6 +128,7 @@ class App extends React.Component {
             },
             () => {
               console.log("Login details sent via post. " + result.message);
+              this.handleAuth(this.state.token);
             }
           );
         },
@@ -103,7 +139,7 @@ class App extends React.Component {
           });
         }
       );
-    // End of handleaddcar function
+    // End of handlelogin function
   }
 
   handleDeleteItem() {
@@ -238,6 +274,7 @@ class App extends React.Component {
             handleLogin={this.handleLogin}
             handleUsername={this.handleUsername}
             handlePassword={this.handlePassword}
+            loggedIn={this.state.loggedIn}
           />
 
           {/* Call List component to display to do list */}
@@ -249,7 +286,7 @@ class App extends React.Component {
               handleDeleteItem={this.handleDeleteItem}
               handleItemToDelete={this.handleItemToDelete}
             />
-            <DisplayList listItems={items} />
+            <DisplayList listItems={items} loggedIn={this.state.loggedIn} />
           </div>
         </div>
       );
