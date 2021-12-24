@@ -33,19 +33,26 @@ exports.findAll = function (req, res) {
         .send({ message: "Some error occurred while retrieving list." });
     } else {
       let listItems = [];
+      let listIdArray = [];
 
       list.forEach(function (result) {
         listItems.push(result.item);
       });
 
-      res.json({ message: `${listItems}` });
+      list.forEach(function (result) {
+        listIdArray.push(result._id);
+      });
+
+      res.json({ message: `${listItems}`, id: `${listIdArray}` });
     }
   });
 };
 
 // Delete list item
 exports.deleteListItem = function (req, res) {
-  List.findOneAndRemove({ item: req.body.item }, function (err) {
+  //let theId = `ObjectId("${req.body.id}")`;
+
+  List.findOneAndRemove({ _id: req.body.id }, function (err) {
     if (err) {
       console.log("ERROR: Item NOT removed. " + err);
       res.send({ message: "ERROR: Item NOT removed. " + err });

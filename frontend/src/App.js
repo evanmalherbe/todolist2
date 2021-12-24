@@ -22,6 +22,7 @@ class App extends React.Component {
       token: "",
       isLoaded: false,
       items: [],
+      idArray: [],
       item: "",
       itemToDelete: "",
       loggedIn: "",
@@ -183,14 +184,14 @@ class App extends React.Component {
   }
 
   // Handler function to delete list item from database when user submits form
-  handleDeleteItem() {
+  handleDeleteItem(itemId) {
     fetch("/delete", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        item: this.state.itemToDelete,
+        id: itemId,
       }),
     })
       .then((res) => res.json())
@@ -224,7 +225,7 @@ class App extends React.Component {
       headers: {
         "Content-Type": "application/json",
       },
-      // Send new url in body of request
+
       body: JSON.stringify({
         item: this.state.item,
       }),
@@ -265,6 +266,7 @@ class App extends React.Component {
             this.setState({
               isLoaded: true,
               items: result.message,
+              idArray: result.id,
             });
           },
           (error) => {
@@ -356,6 +358,7 @@ class App extends React.Component {
               {
                 isLoaded: true,
                 items: result.message,
+                idArray: result.id,
               },
               () => {
                 if (sessionStorage.getItem("loggedIn") === undefined) {
@@ -420,7 +423,12 @@ class App extends React.Component {
               handleItemToDelete={this.handleItemToDelete}
               loggedIn={this.state.loggedIn}
             />
-            <DisplayList listItems={items} loggedIn={this.state.loggedIn} />
+            <DisplayList
+              listItems={items}
+              idArray={this.state.idArray}
+              loggedIn={this.state.loggedIn}
+              handleDeleteItem={this.handleDeleteItem}
+            />
           </div>
         </div>
       );

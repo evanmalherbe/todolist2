@@ -8,7 +8,7 @@ import Button from "react-bootstrap/Button";
 function ListForm(props) {
   return (
     <div className="form">
-      <p className="bold">Add or delete an item from your list</p>
+      <p className="bold">Add an item to your list</p>
       <Form>
         <div className="form-group">
           <FormLabel> Add Item: </FormLabel>
@@ -21,21 +21,6 @@ function ListForm(props) {
           />{" "}
           <Button variant="primary" onClick={props.handleAddItem}>
             Add item
-          </Button>
-        </div>
-
-        <div className="form-group">
-          <FormLabel> Delete Item: </FormLabel>
-          <FormControl
-            type="text"
-            className="deleteItemInput"
-            name="toDelete"
-            placeholder="..."
-            onChange={props.handleItemToDelete}
-          />
-
-          <Button variant="primary" onClick={props.handleDeleteItem}>
-            Delete item
           </Button>
         </div>
       </Form>
