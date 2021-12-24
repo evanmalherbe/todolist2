@@ -35,6 +35,9 @@ exports.findAll = function (req, res) {
       let listItems = [];
       let listIdArray = [];
 
+      /* Learned to create array from mongoDB output here: 
+      https://stackoverflow.com/questions/38997210/create-array-of-items-from-mongodb-node-js */
+
       list.forEach(function (result) {
         listItems.push(result.item);
       });
@@ -50,8 +53,6 @@ exports.findAll = function (req, res) {
 
 // Delete list item
 exports.deleteListItem = function (req, res) {
-  //let theId = `ObjectId("${req.body.id}")`;
-
   List.findOneAndRemove({ _id: req.body.id }, function (err) {
     if (err) {
       console.log("ERROR: Item NOT removed. " + err);

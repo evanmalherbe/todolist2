@@ -14,6 +14,9 @@ function DisplayList(props) {
   let data = props.listItems;
   let idData = props.idArray;
 
+  /* Learned to create a new array by splitting an existing array on every comma - consulted this site:
+  https://stackoverflow.com/questions/2858121/how-can-i-convert-a-comma-separated-string-to-an-array */
+
   let arrayData = data.split(",");
   let arrayId = idData.split(",");
 

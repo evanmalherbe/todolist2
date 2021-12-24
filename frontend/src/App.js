@@ -409,6 +409,7 @@ class App extends React.Component {
       return (
         <div className="app">
           <Header
+            username={this.state.username}
             handleLogin={this.handleLogin}
             handleUsername={this.handleUsername}
             handlePassword={this.handlePassword}
