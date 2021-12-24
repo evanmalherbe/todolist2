@@ -25,7 +25,7 @@ class App extends React.Component {
       idArray: [],
       item: "",
       itemToDelete: "",
-      loggedIn: "",
+      loggedIn: "false",
       message: "",
       error: null,
     };
@@ -49,9 +49,10 @@ class App extends React.Component {
 
   // Function to log user out when they click "logout" button in header
   handleLogout(event) {
-    this.setState({ loggedIn: false }, () => {
+    this.setState({ loggedIn: false, isLoaded: false }, () => {
       console.log("User, " + this.state.username + ", logged out.");
       sessionStorage.setItem("loggedIn", false);
+      this.reloadList();
     });
   }
 
@@ -388,7 +389,6 @@ class App extends React.Component {
       return <div>Loading...</div>;
     } else if (
       sessionStorage.getItem("loggedIn") === false ||
-      this.state.loggedIn === "" ||
       this.state.loggedIn === false
     ) {
       return (
