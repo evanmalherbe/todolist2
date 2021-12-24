@@ -8,17 +8,19 @@ import "../App.css";
 
 // Function to display buttons to list all cars or only cars older than 5 years
 function DisplayList(props) {
-  let toDisplay;
-  if (props.loggedIn === true) {
-    toDisplay = <p>{props.listItems}</p>;
-  } else {
-    toDisplay = <p className="redPara">Not logged in.</p>;
+  let data = props.listItems;
+
+  let array = data.split(",");
+  let displayItems = [];
+
+  for (let i = 0; i <= array.length - 1; i++) {
+    displayItems.push(<li key={i}>{array[i]}</li>);
   }
 
   return (
     <div className="list">
       <p className="bold">List items</p>
-      {toDisplay}
+      <ul>{displayItems}</ul>
     </div>
   );
 }

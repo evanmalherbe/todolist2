@@ -1,12 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
 // import mongoose
 const mongoose = require("mongoose");
 
 const path = require("path");
-
 const app = express();
 
 // Use bodyparser
@@ -19,11 +19,16 @@ app.set("view engine", "pug");
 
 app.use(express.static(path.join(__dirname, "public")));
 
+// Set path to .env file
+dotenv.config({ path: ".env" });
+
 //Import routes
 require("./routes/display.js")(app);
 require("./routes/add.js")(app);
 require("./routes/delete.js")(app);
 require("./routes/login.js")(app);
+require("./routes/updateLogin.js")(app);
+require("./routes/loginStatus.js")(app);
 
 app.get("/data", function (req, res) {
   res.send({ message: "Hello World!" });
@@ -35,7 +40,7 @@ app.get("/resource", (req, res) => {
   try {
     const decoded = jwt.verify(token, "jwt-secret");
     res.send({
-      message: `Success, ${decoded.name}! Your JSON Web Token has been verified.`,
+      message: `${decoded.name}`,
     });
   } catch (err) {
     res.status(401).send({ message: "Invalid token" });
@@ -76,9 +81,13 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+/* Get password from .env file. Needed to consult the following website to get it to work: 
+https://stackoverflow.com/questions/65896414/how-can-i-use-environmental-variable-for-database-password-in-nodejs */
+let pword = process.env.PASSWORD;
+let collection = "lists";
+
 //Uri for connecting to database from MongoDB Atlas>Connect
-const uri =
-  "mongodb+srv://evanmalherbe:jinnscir@cluster0.xrjxb.mongodb.net/lists?retryWrites=true&w=majority";
+const uri = `mongodb+srv://evanmalherbe:${pword}@cluster0.xrjxb.mongodb.net/${collection}?retryWrites=true&w=majority`;
 
 mongoose.Promise = global.Promise;
 

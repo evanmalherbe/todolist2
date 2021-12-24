@@ -6,6 +6,9 @@ import logo from "../eagleLogo.png";
 // Import component
 import LoginForm from "./LoginForm";
 
+// Import React Bootstrap components
+import Button from "react-bootstrap/Button";
+
 // Import bootstrap styles
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -15,7 +18,9 @@ import "../App.css";
 // Function to display buttons to list all cars or only cars older than 5 years
 function Header(props) {
   let displayLoginForm;
-  if (!props.loggedIn) {
+  //console.log("Login status is: " + props.loggedIn);
+
+  if (props.loggedIn === false || props.loggedIn === "") {
     displayLoginForm = (
       <LoginForm
         handleLogin={props.handleLogin}
@@ -24,7 +29,14 @@ function Header(props) {
       />
     );
   } else {
-    displayLoginForm = <p className="loggedInMsg">Logged in</p>;
+    displayLoginForm = (
+      <div className="loggedInDiv">
+        Logged in &nbsp;
+        <Button variant="primary" type="button" onClick={props.handleLogout}>
+          Log out
+        </Button>
+      </div>
+    );
   }
 
   return (

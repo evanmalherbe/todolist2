@@ -8,10 +8,6 @@ import Button from "react-bootstrap/Button";
 function ListForm(props) {
   return (
     <div className="form">
-      {/* Create form for adding or deleting items.Includes onChange and onClick events to handle user 
-                input. Styled with React Bootstrap. Learned how to use forms here:
-                https://react-bootstrap.netlify.app/components/forms/ */}
-
       <p className="bold">Add or delete an item from your list</p>
       <Form>
         <div className="form-group">
@@ -43,12 +39,10 @@ function ListForm(props) {
           </Button>
         </div>
       </Form>
-
-      {/* End of "form" container */}
     </div>
-
-    // End of return()
   );
+
+  // End of return()
 }
 
 // Export component so it can be used by App.js

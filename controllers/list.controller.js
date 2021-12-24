@@ -24,16 +24,21 @@ exports.create = function (req, res) {
   });
 };
 
-// Find all list items in collection and display (do not display _id and __v )
 exports.findAll = function (req, res) {
-  List.find({}, "-_id -__v", function (err, list) {
+  List.find({}, function (err, list) {
     if (err) {
       console.log(err);
       res
         .status(500)
         .send({ message: "Some error occurred while retrieving list." });
     } else {
-      res.json({ message: `${list}` });
+      let listItems = [];
+
+      list.forEach(function (result) {
+        listItems.push(result.item);
+      });
+
+      res.json({ message: `${listItems}` });
     }
   });
 };
