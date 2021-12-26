@@ -30,9 +30,9 @@ require("./routes/login.js")(app);
 require("./routes/updateLogin.js")(app);
 require("./routes/loginStatus.js")(app);
 
-app.get("/data", function (req, res) {
-  res.send({ message: "Hello World!" });
-});
+// app.get("/data", function (req, res) {
+//   res.send({ message: "Hello World!" });
+// });
 
 app.get("/resource", (req, res) => {
   const auth = req.headers["authorization"];
@@ -108,7 +108,7 @@ mongoose.connection.once("open", function () {
   console.log("Successfully connected to the database");
 });
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });

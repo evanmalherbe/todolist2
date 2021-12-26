@@ -1,7 +1,7 @@
 // Import mongoose
 const mongoose = require("mongoose");
 
-// Create schema for database entries (each document in db represents a car)
+// Create schema for database entries (each document in db represents a list item)
 let listSchema = mongoose.Schema({
   item: {
     type: String,

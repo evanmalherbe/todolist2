@@ -31,7 +31,7 @@ function Header(props) {
   } else {
     displayLoginForm = (
       <div className="loggedInDiv">
-        <b>{props.username}</b>&nbsp; is logged in &nbsp;
+        Welcome back,&nbsp;<b>{props.username}</b>! &nbsp;
         <Button variant="primary" type="button" onClick={props.handleLogout}>
           Log out
         </Button>

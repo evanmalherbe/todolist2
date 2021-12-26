@@ -25,7 +25,7 @@ class App extends React.Component {
       idArray: [],
       item: "",
       itemToDelete: "",
-      loggedIn: "false",
+      loggedIn: false,
       message: "",
       error: null,
     };
@@ -38,7 +38,6 @@ class App extends React.Component {
     //this.updateLoginStatus = this.updateLoginStatus.bind(this);
     //this.fetchLoginStatus = this.fetchLoginStatus.bind(this);
 
-    this.handleItemToDelete = this.handleItemToDelete.bind(this);
     this.handleItemToAdd = this.handleItemToAdd.bind(this);
     this.handleAddItem = this.handleAddItem.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
@@ -56,23 +55,11 @@ class App extends React.Component {
     });
   }
 
-  // Functions to save list item user wants to delete or add to state variable
-  handleItemToDelete(event) {
-    this.setState(
-      {
-        itemToDelete: event.target.value,
-      },
-      () => console.log("Item to delete saved: " + this.state.itemToDelete)
-    );
-  }
-
+  // Add/save list item to state
   handleItemToAdd(event) {
-    this.setState(
-      {
-        item: event.target.value,
-      },
-      () => console.log("New list item saved: " + this.state.item)
-    );
+    this.setState({
+      item: event.target.value,
+    });
   }
 
   // Functions to save username and password to state when user types them in to login form in header
@@ -81,7 +68,10 @@ class App extends React.Component {
       {
         username: event.target.value,
       },
-      () => console.log("Username saved: " + this.state.username)
+      () => {
+        sessionStorage.setItem("currentUser", this.state.username);
+        console.log("Username saved: " + this.state.username);
+      }
     );
   }
 
@@ -115,35 +105,44 @@ class App extends React.Component {
 
   /* Takes token created in "handleLogin" function and authenticates user */
   handleAuth(token) {
-    fetch("/resource", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState(
-            {
-              message: result.message,
-              isLoaded: false,
-              loggedIn: true,
-            },
-            () => {
-              console.log("handleAuth run. Welcome, " + this.state.message);
-              sessionStorage.setItem("loggedIn", true);
-              this.reloadList();
-            }
-          );
+    if (token !== "Incorrect login!") {
+      fetch("/resource", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
         },
-        (error) => {
-          this.setState({
-            error,
-          });
-        }
-      );
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState(
+              {
+                message: result.message,
+                isLoaded: false,
+                loggedIn: true,
+              },
+              () => {
+                console.log("handleAuth run. Welcome, " + this.state.message);
+                sessionStorage.setItem("loggedIn", true);
+                this.reloadList();
+              }
+            );
+          },
+          (error) => {
+            this.setState({
+              error,
+            });
+          }
+        );
+    } else {
+      /* Learned to clear/reset form here:
+      https://stackoverflow.com/questions/3786694/how-to-reset-clear-form-through-javascript */
+      document.forms["loginForm"].reset();
+      alert("Incorrect login details. Please try again.");
+      console.log("Invalid token. Not logged in.");
+      this.reloadList();
+    }
     // End of handleauth function
   }
 
@@ -217,6 +216,7 @@ class App extends React.Component {
           });
         }
       );
+    // End of handledeleteitem function
   }
 
   // Handler function to add list item to database when user submits form
@@ -253,6 +253,7 @@ class App extends React.Component {
           });
         }
       );
+    // End of handleadditem function
   }
 
   // Function to reload list of items from database after a change (delete or update)
@@ -382,7 +383,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, items } = this.state;
+    const { error, isLoaded, items, loggedIn, username, idArray } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -397,7 +398,7 @@ class App extends React.Component {
             handleLogin={this.handleLogin}
             handleUsername={this.handleUsername}
             handlePassword={this.handlePassword}
-            loggedIn={this.state.loggedIn}
+            loggedIn={loggedIn}
             handleLogout={this.handleLogout}
           />
           <div className="row">
@@ -406,14 +407,20 @@ class App extends React.Component {
         </div>
       );
     } else {
+      let user;
+      if (sessionStorage.getItem("currentUser") !== undefined) {
+        user = sessionStorage.getItem("currentUser");
+      } else {
+        user = username;
+      }
       return (
         <div className="app">
           <Header
-            username={this.state.username}
+            username={user}
             handleLogin={this.handleLogin}
             handleUsername={this.handleUsername}
             handlePassword={this.handlePassword}
-            loggedIn={this.state.loggedIn}
+            loggedIn={loggedIn}
             handleLogout={this.handleLogout}
           />
           <div className="row">
@@ -421,13 +428,10 @@ class App extends React.Component {
               handleAddItem={this.handleAddItem}
               handleItemToAdd={this.handleItemToAdd}
               handleDeleteItem={this.handleDeleteItem}
-              handleItemToDelete={this.handleItemToDelete}
-              loggedIn={this.state.loggedIn}
             />
             <DisplayList
               listItems={items}
-              idArray={this.state.idArray}
-              loggedIn={this.state.loggedIn}
+              idArray={idArray}
               handleDeleteItem={this.handleDeleteItem}
             />
           </div>
