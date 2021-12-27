@@ -40,11 +40,11 @@ This project uses:
 
 To run this project, do the following:
 
-1. Copy the directory called 'firstMongo' to your local machine.
-2. Navigate to this directory from the command line interface. E.g. cd c:/firstMongo.
+1. Copy the project files to a directory called 'todolist' on your local machine.
+2. Navigate to this directory from the command line interface. E.g. cd c:/todolist.
 3. In the command line interface type 'npm install'.
 4. Once it has finished installing, type 'npm start'.
-5. Now navigate to the "/frontend" directory inside "firstMongo". E.g. cd c:/firstMongo/frontend.
+5. Now navigate to the "/frontend" directory inside "todolist". E.g. cd c:/todolist/frontend.
 6. In the command line interface, once again type 'npm install'.
 7. Once it has finished installing, type 'npm start'.
 8. You have now started both the backend and frontend servers.
@@ -52,14 +52,14 @@ To run this project, do the following:
 
 ## Usage
 
-1. Once you open the project in your browser [http://localhost:3000](http://localhost:3000), you will see the forms to add, update or delete cars from the database and the "Results" list, where the contents of the database are displayed. See figure 1 below.
+1. Once you open the project in your browser [http://localhost:3000](http://localhost:3000), you will see the login form at the top of the screen. See figure 1 below.
 
 ![figure 1](screenshots/screenshot1.png)
 Figure 1
 
-### Add a Car
+### Register
 
-2. To add a car to the database, fill in the "Add" form on the left side of the screen and click on the "Add Car" button at the bottom. You will see the "Results" list update with the new car information. See figure 2 and 3 below.
+2. In order to start using the app, you need to register as a user first. Type in the username and password that you want to use and then click the "Register" button. You will receive a pop up message that says you have been registered and asks you to log in. See figure 2 and 3 below.
 
 ![figure 2](screenshots/screenshot2.png)
 Figure 2
@@ -67,19 +67,21 @@ Figure 2
 ![figure 3](screenshots/screenshot3.png)
 Figure 3
 
-### Update a Car
+### Log in
 
-3. To update the information for an existing car in the database, use the "Update" form. First enter the name of the owner who's car you want to update (important!), then fill in the other boxes with updated information. Lastly, click on the "Update Car" button at the bottom. You will see that the car will be updated in the "Results" list. See figure 4 and 5 below.
+3. To log in, type in your username and password (the ones you used to register as a user in the previous step), and click on the "Login" button. See figure 4 below.
 
 ![figure 4](screenshots/screenshot4.png)
 Figure 4
 
+4. You will now be able to add list items. See figure 5 below.
+
 ![figure 5](screenshots/screenshot5.png)
 Figure 5
 
-### Update Many Cars
+### Add List Items
 
-4. To update the information for several cars at once, use the "Update Many" form. Fill in the name of the owner of the existing cars on the list that you want to update (important!), then fill in the colour that you would like them to be updated with. Lastly, click the "Update Cars" button at the bottom of the form. You will see the cars have been updated on the "Results" list. See figure 6 and 7 below.
+5. To add an item to your list, simply type it into the box and click the "Add item" button. You will see your item displayed on the right. See figure 6 and 7 below.
 
 ![figure 6](screenshots/screenshot6.png)
 Figure 6
@@ -87,21 +89,19 @@ Figure 6
 ![figure 7](screenshots/screenshot7.png)
 Figure 7
 
-### List All Cars or List Older Cars
+### Delete List Item
 
-5. To list the Model, Make, Registration and current owner for all cars older than 5 years, click the "List Older Cars" button. To refresh the list to show ALL the cars in the database again, click the "List All Cars" button. See figure 8 below.
+5. To delete an item from your list, just click the red cross button next to the item. See figure 8 below.
 
 ![figure 8](screenshots/screenshot8.png)
 Figure 8
 
-### Delete a Car
+### Logging Out
 
-6. To delete a car from the database, use the "Delete" form. Enter the name of the owner of the car that you want to delete, then click the "Delete Car" button. See figure 9 below.
+6. To log out of the list app, just click the "Logout" button at the top right of the screen. The items that you added to your list will be safely stored and you will be able to view them again the next time you log into the app. See figure 9 below.
 
 ![figure 9](screenshots/screenshot9.png)
 Figure 9
-
-7. You will see that the car has been deleted/removed from the list/database.
 
 ## Credits
 
