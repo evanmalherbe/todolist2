@@ -54,7 +54,8 @@ To run this project, do the following:
 
 1. Once you open the project in your browser [http://localhost:3000](http://localhost:3000), you will see the login form at the top of the screen. See figure 1 below.
 
-![figure 1](screenshots/screenshot1.png)
+## |![figure 1](screenshots/screenshot1.png)|
+
 Figure 1
 
 ### Register
