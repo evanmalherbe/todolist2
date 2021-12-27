@@ -19,10 +19,14 @@ class App extends React.Component {
     this.state = {
       username: "",
       password: "",
+      currentUser: null,
+      users: [],
+      pwords: [],
       token: "",
       isLoaded: false,
       items: [],
       idArray: [],
+      userArray: [],
       item: "",
       itemToDelete: "",
       loggedIn: false,
@@ -35,6 +39,7 @@ class App extends React.Component {
     this.handlePassword = this.handlePassword.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
     //this.updateLoginStatus = this.updateLoginStatus.bind(this);
     //this.fetchLoginStatus = this.fetchLoginStatus.bind(this);
 
@@ -51,6 +56,7 @@ class App extends React.Component {
     this.setState({ loggedIn: false, isLoaded: false }, () => {
       console.log("User, " + this.state.username + ", logged out.");
       sessionStorage.setItem("loggedIn", false);
+      sessionStorage.setItem("currentUser", null);
       this.reloadList();
     });
   }
@@ -69,7 +75,6 @@ class App extends React.Component {
         username: event.target.value,
       },
       () => {
-        sessionStorage.setItem("currentUser", this.state.username);
         console.log("Username saved: " + this.state.username);
       }
     );
@@ -121,10 +126,14 @@ class App extends React.Component {
                 message: result.message,
                 isLoaded: false,
                 loggedIn: true,
+                currentUser: result.message,
               },
               () => {
-                console.log("handleAuth run. Welcome, " + this.state.message);
+                console.log(
+                  "handleAuth has run. Welcome, " + this.state.currentUser
+                );
                 sessionStorage.setItem("loggedIn", true);
+                sessionStorage.setItem("currentUser", this.state.currentUser);
                 this.reloadList();
               }
             );
@@ -157,6 +166,8 @@ class App extends React.Component {
       body: JSON.stringify({
         username: this.state.username,
         password: this.state.password,
+        users: this.state.users,
+        pwords: this.state.pwords,
       }),
     })
       .then((res) => res.json())
@@ -181,6 +192,46 @@ class App extends React.Component {
         }
       );
     // End of handlelogin function
+  }
+
+  // Take user login details and create JWT token, then call "handleAuth" function to authenticate user
+  handleRegister(event) {
+    fetch("/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        username: this.state.username,
+        password: this.state.password,
+      }),
+    })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState(
+            {
+              isLoaded: false,
+            },
+            () => {
+              console.log("Registration details sent via post.");
+              alert(
+                "New user, " +
+                  this.state.username +
+                  ", registered. Please log in."
+              );
+              this.reloadList();
+            }
+          );
+        },
+        (error) => {
+          this.setState({
+            error,
+          });
+        }
+      );
+    // End of handleregister function
   }
 
   // Handler function to delete list item from database when user submits form
@@ -228,6 +279,7 @@ class App extends React.Component {
       },
 
       body: JSON.stringify({
+        user: this.state.currentUser,
         item: this.state.item,
       }),
     })
@@ -269,7 +321,31 @@ class App extends React.Component {
               isLoaded: true,
               items: result.message,
               idArray: result.id,
+              userArray: result.user,
             });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+
+      // Retrieve usernames and passwords from database
+      fetch("/getLogins")
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState(
+              {
+                users: result.users,
+                pwords: result.pwords,
+              },
+              () => {
+                console.log("Logins retrieved from db.");
+              }
+            );
           },
           (error) => {
             this.setState({
@@ -282,32 +358,6 @@ class App extends React.Component {
       // End of if statement to check if list of items has been loaded yet.
     }
   }
-
-  // // Function to fetch list items from database and save them to state variable
-  // loadList() {
-  //   if (this.state.isLoaded === false) {
-  //     console.log("Load list has run.");
-
-  //     fetch("/getList")
-  //       .then((res) => res.json())
-  //       .then(
-  //         (result) => {
-  //           this.setState({
-  //             isLoaded: true,
-  //             items: result.message,
-  //           });
-  //         },
-  //         (error) => {
-  //           this.setState({
-  //             isLoaded: true,
-  //             error,
-  //           });
-  //         }
-  //       );
-
-  //     // End of if statement to check if list has been loaded yet.
-  //   }
-  // }
 
   // // Function to fetch login status from database (user logged in or not - boolean)
   // fetchLoginStatus() {
@@ -349,9 +399,11 @@ class App extends React.Component {
   // }
 
   componentDidMount() {
+    // If statement to check if data has been fetched already or not. Won't run twice.
     if (this.state.isLoaded === false) {
       console.log("componentDidMount - Load list has run.");
 
+      // Retrieve list items from database
       fetch("/getList")
         .then((res) => res.json())
         .then(
@@ -361,12 +413,37 @@ class App extends React.Component {
                 isLoaded: true,
                 items: result.message,
                 idArray: result.id,
+                userArray: result.user,
               },
               () => {
                 if (sessionStorage.getItem("loggedIn") === undefined) {
                   sessionStorage.setItem("loggedIn", false);
                   console.log("Session storage - login status set to false");
                 }
+                console.log("User array says: " + this.state.userArray);
+              }
+            );
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+
+      // Retrieve usernames and passwords from database
+      fetch("/getLogins")
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState(
+              {
+                users: result.users,
+                pwords: result.pwords,
+              },
+              () => {
+                console.log("Logins retrieved from db.");
               }
             );
           },
@@ -383,7 +460,8 @@ class App extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, items, loggedIn, username, idArray } = this.state;
+    const { error, isLoaded, items, loggedIn, username, idArray, userArray } =
+      this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -396,6 +474,7 @@ class App extends React.Component {
         <div className="app">
           <Header
             handleLogin={this.handleLogin}
+            handleRegister={this.handleRegister}
             handleUsername={this.handleUsername}
             handlePassword={this.handlePassword}
             loggedIn={loggedIn}
@@ -416,8 +495,9 @@ class App extends React.Component {
       return (
         <div className="app">
           <Header
-            username={user}
+            currentUser={user}
             handleLogin={this.handleLogin}
+            handleRegister={this.handleRegister}
             handleUsername={this.handleUsername}
             handlePassword={this.handlePassword}
             loggedIn={loggedIn}
@@ -430,8 +510,10 @@ class App extends React.Component {
               handleDeleteItem={this.handleDeleteItem}
             />
             <DisplayList
+              currentUser={user}
               listItems={items}
               idArray={idArray}
+              userArray={userArray}
               handleDeleteItem={this.handleDeleteItem}
             />
           </div>

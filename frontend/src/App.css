@@ -11,11 +11,7 @@ body {
   font-weight: bold;
 }
 
-.redPara {
-  color: red;
-}
-
-.redHeading {
+.redPara, .redHeading, .redDiv {
   color: red;
 }
 
@@ -89,6 +85,29 @@ body {
 .loginFormGroup {
   display: flex;
   flex-direction: row;
+}
+
+.loginFormDiv {
+  display: flex;
+  flex-direction: row;
+ 
+}
+
+.row {
+  width: 60rem;
+  
+}
+
+.loginButton {
+  width: 6rem;
+}
+
+.registerButton {
+  width: 6rem;
+}
+
+.addInput {
+  width: 40rem;
 }
 
 .form-group Button {

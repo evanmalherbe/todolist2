@@ -17,14 +17,13 @@ function LoginForm(props) {
       {/* Learned how to turn autocomplete off here: 
       https://reactgo.com/react-turn-off-autocomplete/ */}
       <Form id="loginForm" autoComplete="off">
-        <Row>
-          <Col>
+        <Row className="row">
+          <Col className="addInput">
             <FormLabel> Username: </FormLabel>
           </Col>
-          <Col>
+          <Col className="addInput">
             <FormControl
               type="text"
-              className="addInput"
               name="toAdd"
               placeholder="..."
               onChange={props.handleUsername}
@@ -43,8 +42,23 @@ function LoginForm(props) {
             />{" "}
           </Col>
           <Col>
-            <Button variant="primary" type="button" onClick={props.handleLogin}>
+            <Button
+              className="loginButton"
+              variant="primary"
+              type="button"
+              onClick={props.handleLogin}
+            >
               Login
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              variant="primary"
+              type="button"
+              className="registerButton"
+              onClick={props.handleRegister}
+            >
+              Register
             </Button>
           </Col>
         </Row>

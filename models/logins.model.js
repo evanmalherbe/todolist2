@@ -7,8 +7,8 @@ let loginSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  loggedin: {
-    type: Boolean,
+  password: {
+    type: String,
     required: true,
   },
 });

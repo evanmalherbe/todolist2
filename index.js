@@ -27,8 +27,10 @@ require("./routes/display.js")(app);
 require("./routes/add.js")(app);
 require("./routes/delete.js")(app);
 require("./routes/login.js")(app);
-require("./routes/updateLogin.js")(app);
-require("./routes/loginStatus.js")(app);
+require("./routes/getLogins.js")(app);
+require("./routes/register.js")(app);
+// require("./routes/updateLogin.js")(app);
+// require("./routes/loginStatus.js")(app);
 
 // app.get("/data", function (req, res) {
 //   res.send({ message: "Hello World!" });

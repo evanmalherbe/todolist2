@@ -26,12 +26,13 @@ function Header(props) {
         handleLogin={props.handleLogin}
         handleUsername={props.handleUsername}
         handlePassword={props.handlePassword}
+        handleRegister={props.handleRegister}
       />
     );
   } else {
     displayLoginForm = (
       <div className="loggedInDiv">
-        Welcome back,&nbsp;<b>{props.username}</b>! &nbsp;
+        Welcome back,&nbsp;<b>{props.currentUser}</b>! &nbsp;
         <Button variant="primary" type="button" onClick={props.handleLogout}>
           Log out
         </Button>

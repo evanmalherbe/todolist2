@@ -5,7 +5,7 @@ const Login = require("../models/logins.model.js");
 exports.create = function (req, res) {
   let loginModel = new Login({
     username: req.body.username,
-    loggedin: req.body.loggedin,
+    password: req.body.password,
   });
 
   // Save new login to collection
@@ -18,6 +18,33 @@ exports.create = function (req, res) {
     } else {
       console.log(data);
       res.send({ message: "Login info has been added" });
+    }
+  });
+};
+
+exports.findAll = function (req, res) {
+  Login.find({}, function (err, logins) {
+    if (err) {
+      console.log(err);
+      res
+        .status(500)
+        .send({ message: "Some error occurred while retrieving logins." });
+    } else {
+      let usernames = [];
+      let passwords = [];
+
+      /* Learned to create array from mongoDB output here: 
+      https://stackoverflow.com/questions/38997210/create-array-of-items-from-mongodb-node-js */
+
+      logins.forEach(function (result) {
+        usernames.push(result.username);
+      });
+
+      logins.forEach(function (result) {
+        passwords.push(result.password);
+      });
+
+      res.json({ users: `${usernames}`, pwords: `${passwords}` });
     }
   });
 };

@@ -7,6 +7,7 @@ const List = require("../models/list.model.js");
 exports.create = function (req, res) {
   // Get form info from req.body and add to new Car model
   let listModel = new List({
+    user: req.body.user,
     item: req.body.item,
   });
 
@@ -34,6 +35,7 @@ exports.findAll = function (req, res) {
     } else {
       let listItems = [];
       let listIdArray = [];
+      let listUserArray = [];
 
       /* Learned to create array from mongoDB output here: 
       https://stackoverflow.com/questions/38997210/create-array-of-items-from-mongodb-node-js */
@@ -43,10 +45,18 @@ exports.findAll = function (req, res) {
       });
 
       list.forEach(function (result) {
+        listUserArray.push(result.user);
+      });
+
+      list.forEach(function (result) {
         listIdArray.push(result._id);
       });
 
-      res.json({ message: `${listItems}`, id: `${listIdArray}` });
+      res.json({
+        message: `${listItems}`,
+        id: `${listIdArray}`,
+        user: `${listUserArray}`,
+      });
     }
   });
 };
