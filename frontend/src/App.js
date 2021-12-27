@@ -17,8 +17,8 @@ class App extends React.Component {
     super(props);
     // Set initial state variables. Includes array to store to do list.
     this.state = {
-      username: "",
-      password: "",
+      username: null,
+      password: null,
       currentUser: null,
       users: [],
       pwords: [],
@@ -27,7 +27,7 @@ class App extends React.Component {
       items: [],
       idArray: [],
       userArray: [],
-      item: "",
+      item: null,
       itemToDelete: "",
       loggedIn: false,
       message: "",
@@ -53,26 +53,42 @@ class App extends React.Component {
 
   // Function to log user out when they click "logout" button in header
   handleLogout(event) {
-    this.setState({ loggedIn: false, isLoaded: false }, () => {
-      console.log("User, " + this.state.username + ", logged out.");
-      sessionStorage.setItem("loggedIn", false);
-      sessionStorage.setItem("currentUser", null);
-      this.reloadList();
-    });
+    this.setState(
+      {
+        loggedIn: false,
+        isLoaded: false,
+        username: null,
+        password: null,
+        item: null,
+      },
+      () => {
+        console.log("User logged out.");
+        sessionStorage.setItem("loggedIn", false);
+        sessionStorage.setItem("currentUser", null);
+        this.reloadList();
+      }
+    );
   }
 
   // Add/save list item to state
   handleItemToAdd(event) {
+    let value = event.target.value;
+
+    /* Learned to trim spaces from a string here:
+    https://www.w3schools.com/jsref/jsref_trim_string.asp */
+    let trimmedItem = value.trim();
     this.setState({
-      item: event.target.value,
+      item: trimmedItem,
     });
   }
 
   // Functions to save username and password to state when user types them in to login form in header
   handleUsername(event) {
+    let value = event.target.value;
+    let user = value.trim();
     this.setState(
       {
-        username: event.target.value,
+        username: user,
       },
       () => {
         console.log("Username saved: " + this.state.username);
@@ -81,32 +97,14 @@ class App extends React.Component {
   }
 
   handlePassword(event) {
+    let value = event.target.value;
+    let pwd = value.trim();
     this.setState({
-      password: event.target.value,
+      password: pwd,
     });
   }
 
   // --------------------------------------------------------- //
-
-  // // Update database with current login status (logged in or logged out - boolean)
-  // updateLoginStatus(username, loginStatus) {
-  //   sessionStorage.setItem("loggedIn", loginStatus);
-  //   //sessionStorage.setItem("currentUser", username);
-
-  //   //let loggedInState = sessionStorage.getItem("loggedIn");
-
-  //   this.setState(
-  //     {
-  //       isLoaded: false,
-  //     },
-  //     () => {
-  //       console.log("Login status is: " + sessionStorage.getItem("loggedIn"));
-  //       this.reloadList();
-  //     }
-  //   );
-
-  //   // End of updateLoginStatus function
-  // }
 
   /* Takes token created in "handleLogin" function and authenticates user */
   handleAuth(token) {
@@ -127,6 +125,8 @@ class App extends React.Component {
                 isLoaded: false,
                 loggedIn: true,
                 currentUser: result.message,
+                username: null,
+                password: null,
               },
               () => {
                 console.log(
@@ -157,80 +157,112 @@ class App extends React.Component {
 
   // Take user login details and create JWT token, then call "handleAuth" function to authenticate user
   handleLogin(event) {
-    fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password,
-        users: this.state.users,
-        pwords: this.state.pwords,
-      }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState(
-            {
-              token: result.message,
-            },
-            () => {
-              console.log(
-                "Login details sent via post. Token is " + result.message
-              );
-              this.handleAuth(this.state.token);
-            }
-          );
+    if (this.state.username !== null && this.state.password !== null) {
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        (error) => {
-          this.setState({
-            error,
-          });
+
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password,
+          users: this.state.users,
+          pwords: this.state.pwords,
+        }),
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState(
+              {
+                token: result.message,
+              },
+              () => {
+                console.log(
+                  "Login details sent via post. Token is " + result.message
+                );
+                this.handleAuth(this.state.token);
+              }
+            );
+          },
+          (error) => {
+            this.setState({
+              error,
+            });
+          }
+        );
+      // End of if statement to check that username and password fields are not empty
+    } else {
+      this.setState(
+        {
+          isLoaded: false,
+        },
+        () => {
+          console.log("Username and password fields blank.");
+          alert(
+            "Please enter your username and password, then click 'Login' again."
+          );
+          this.reloadList();
         }
       );
+    }
     // End of handlelogin function
   }
 
   // Take user login details and create JWT token, then call "handleAuth" function to authenticate user
   handleRegister(event) {
-    fetch("/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        username: this.state.username,
-        password: this.state.password,
-      }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState(
-            {
-              isLoaded: false,
-            },
-            () => {
-              console.log("Registration details sent via post.");
-              alert(
-                "New user, " +
-                  this.state.username +
-                  ", registered. Please log in."
-              );
-              this.reloadList();
-            }
-          );
+    if (this.state.username !== null && this.state.password !== null) {
+      fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        (error) => {
-          this.setState({
-            error,
-          });
+
+        body: JSON.stringify({
+          username: this.state.username,
+          password: this.state.password,
+        }),
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState(
+              {
+                isLoaded: false,
+              },
+              () => {
+                console.log("Registration details sent via post.");
+                alert(
+                  "New user, " +
+                    this.state.username +
+                    ", registered. Please log in."
+                );
+                this.reloadList();
+              }
+            );
+          },
+          (error) => {
+            this.setState({
+              error,
+            });
+          }
+        );
+      // End of if statement to check that state variables "username" and "password" are not null
+    } else {
+      this.setState(
+        {
+          isLoaded: false,
+        },
+        () => {
+          console.log("Username and password fields blank.");
+          alert(
+            "Please enter your new username and password, then click 'Register' again."
+          );
+          this.reloadList();
         }
       );
+    }
     // End of handleregister function
   }
 
@@ -272,39 +304,54 @@ class App extends React.Component {
 
   // Handler function to add list item to database when user submits form
   handleAddItem() {
-    fetch("/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-
-      body: JSON.stringify({
-        user: this.state.currentUser,
-        item: this.state.item,
-      }),
-    })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState(
-            {
-              isLoaded: false,
-            },
-            () => {
-              console.log(
-                "Post request to add list item sent. " + result.message
-              );
-              this.reloadList();
-            }
-          );
+    if (this.state.item !== null) {
+      fetch("/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        (error) => {
-          this.setState({
-            isLoaded: false,
-            error,
-          });
+
+        body: JSON.stringify({
+          user: this.state.currentUser,
+          item: this.state.item,
+        }),
+      })
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState(
+              {
+                isLoaded: false,
+              },
+              () => {
+                console.log(
+                  "Post request to add list item sent. " + result.message
+                );
+                this.reloadList();
+              }
+            );
+          },
+          (error) => {
+            this.setState({
+              isLoaded: false,
+              error,
+            });
+          }
+        );
+      // End of if statement to check that user has not submitted empty form field
+    } else {
+      this.setState(
+        {
+          isLoaded: false,
+        },
+        () => {
+          alert(
+            "Form is blank. Please type in a list item to save, then click 'Add item' again."
+          );
+          this.reloadList();
         }
       );
+    }
     // End of handleadditem function
   }
 
@@ -359,45 +406,6 @@ class App extends React.Component {
     }
   }
 
-  // // Function to fetch login status from database (user logged in or not - boolean)
-  // fetchLoginStatus() {
-  //   fetch("/loginStatus", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       username: "evan",
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then(
-  //       (result) => {
-  //         this.setState(
-  //           {
-  //             loggedIn: result.message,
-  //             isLoaded: false,
-  //           },
-  //           () => {
-  //             console.log(
-  //               "Post request to retrieve login status sent. Login status is: " +
-  //                 result.message
-  //             );
-  //             this.loadList();
-  //           }
-  //         );
-  //       },
-  //       (error) => {
-  //         this.setState({
-  //           isLoaded: false,
-  //           error,
-  //         });
-  //       }
-  //     );
-
-  //   // End of fetch login status function
-  // }
-
   componentDidMount() {
     // If statement to check if data has been fetched already or not. Won't run twice.
     if (this.state.isLoaded === false) {
@@ -420,7 +428,6 @@ class App extends React.Component {
                   sessionStorage.setItem("loggedIn", false);
                   console.log("Session storage - login status set to false");
                 }
-                console.log("User array says: " + this.state.userArray);
               }
             );
           },

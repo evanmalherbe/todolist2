@@ -29,41 +29,7 @@ require("./routes/delete.js")(app);
 require("./routes/login.js")(app);
 require("./routes/getLogins.js")(app);
 require("./routes/register.js")(app);
-// require("./routes/updateLogin.js")(app);
-// require("./routes/loginStatus.js")(app);
-
-// app.get("/data", function (req, res) {
-//   res.send({ message: "Hello World!" });
-// });
-
-app.get("/resource", (req, res) => {
-  const auth = req.headers["authorization"];
-  const token = auth.split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, "jwt-secret");
-    res.send({
-      message: `${decoded.name}`,
-    });
-  } catch (err) {
-    res.status(401).send({ message: "Invalid token" });
-  }
-});
-
-app.get("/admin_resource", (req, res) => {
-  const token = req.headers["authorization"].split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, "jwt-secret");
-    if (decoded.admin) {
-      res.send({ msg: "Success!" });
-    } else {
-      res
-        .status(403)
-        .send({ msg: "Your JWT was verified, but you are not an admin." });
-    }
-  } catch (e) {
-    res.sendStatus(401);
-  }
-});
+require("./routes/resource.js")(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

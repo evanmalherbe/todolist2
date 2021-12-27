@@ -27,20 +27,5 @@ module.exports = function (app) {
 
     // If none of the stored logins match what the user enters, say "incorrect login".
     res.status(403).send({ message: "Incorrect login!" });
-
-    // if (usr === "evan" && pwd === "jinnscir") {
-    //   payload = {
-    //     name: usr,
-    //     admin: true,
-    //   };
-
-    //   const token = jwt.sign(JSON.stringify(payload), "jwt-secret", {
-    //     algorithm: "HS256",
-    //   });
-
-    //   res.send({ message: token });
-    // } else {
-    //   res.status(403).send({ message: "Incorrect login!" });
-    // }
   });
 };
