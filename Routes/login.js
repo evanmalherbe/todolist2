@@ -1,15 +1,19 @@
+/* Route to create jwt token for user to log in. Checks to see if login details that user typed in match with any stored in db then creates token if they do, else sends error message */
 module.exports = function (app) {
   const jwt = require("jsonwebtoken");
 
   app.post("/login", (req, res) => {
+    // Declare variables from req.body
     const usr = req.body.username;
     const pwd = req.body.password;
     const users = req.body.users;
     const pwords = req.body.pwords;
 
+    // Split arrays by comma
     let usersArray = users.split(",");
     let pwordsArray = pwords.split(",");
 
+    // For loop to check if user login details match with any logins already stored in db
     for (let i = 0; i <= usersArray.length - 1; i++) {
       if (usr === usersArray[i] && pwd === pwordsArray[i]) {
         payload = {

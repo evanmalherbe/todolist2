@@ -40,14 +40,11 @@ class App extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
-    //this.updateLoginStatus = this.updateLoginStatus.bind(this);
-    //this.fetchLoginStatus = this.fetchLoginStatus.bind(this);
 
     this.handleItemToAdd = this.handleItemToAdd.bind(this);
     this.handleAddItem = this.handleAddItem.bind(this);
     this.handleDeleteItem = this.handleDeleteItem.bind(this);
 
-    //this.loadList = this.loadList.bind(this);
     this.reloadList = this.reloadList.bind(this);
   }
 
@@ -70,7 +67,7 @@ class App extends React.Component {
     );
   }
 
-  // Add/save list item to state
+  // Add/save list item to state prior to storing in db
   handleItemToAdd(event) {
     let value = event.target.value;
 
@@ -103,7 +100,6 @@ class App extends React.Component {
       password: pwd,
     });
   }
-
   // --------------------------------------------------------- //
 
   /* Takes token created in "handleLogin" function and authenticates user */
@@ -192,7 +188,6 @@ class App extends React.Component {
             });
           }
         );
-      // End of if statement to check that username and password fields are not empty
     } else {
       this.setState(
         {
@@ -206,11 +201,14 @@ class App extends React.Component {
           this.reloadList();
         }
       );
+      // End of if statement to check that username and password fields are not empty
     }
+
     // End of handlelogin function
   }
 
-  // Take user login details and create JWT token, then call "handleAuth" function to authenticate user
+  /* Register new user. Saves their login details to db and makes it so they can only access their own to do 
+  list */
   handleRegister(event) {
     if (this.state.username !== null && this.state.password !== null) {
       fetch("/register", {
@@ -248,7 +246,6 @@ class App extends React.Component {
             });
           }
         );
-      // End of if statement to check that state variables "username" and "password" are not null
     } else {
       this.setState(
         {
@@ -262,11 +259,12 @@ class App extends React.Component {
           this.reloadList();
         }
       );
+      // End of if statement to check that state variables "username" and "password" are not null
     }
     // End of handleregister function
   }
 
-  // Handler function to delete list item from database when user submits form
+  // Handler function to delete a list item from database when user clicks the little red cross
   handleDeleteItem(itemId) {
     fetch("/delete", {
       method: "POST",
@@ -338,7 +336,6 @@ class App extends React.Component {
             });
           }
         );
-      // End of if statement to check that user has not submitted empty form field
     } else {
       this.setState(
         {
@@ -351,11 +348,12 @@ class App extends React.Component {
           this.reloadList();
         }
       );
+      // End of if statement to check that user has not submitted empty form field
     }
     // End of handleadditem function
   }
 
-  // Function to reload list of items from database after a change (delete or update)
+  /* Function to reload list of items from database after a change (delete or add). It also retrieves logins from db and saves them to state */
   reloadList() {
     if (this.state.isLoaded === false) {
       console.log("Reload list has run.");
@@ -406,6 +404,7 @@ class App extends React.Component {
     }
   }
 
+  // Runs when page is first loaded. Retrieves to do list and logins from db and saves them to state
   componentDidMount() {
     // If statement to check if data has been fetched already or not. Won't run twice.
     if (this.state.isLoaded === false) {
@@ -474,6 +473,7 @@ class App extends React.Component {
     } else if (!isLoaded) {
       return <div>Loading...</div>;
     } else if (
+      // if user not yet logged in, only show login form, no to do list
       sessionStorage.getItem("loggedIn") === false ||
       this.state.loggedIn === false
     ) {
@@ -493,6 +493,7 @@ class App extends React.Component {
         </div>
       );
     } else {
+      // Else if user is logged in, then show form and to do list for that user
       let user;
       if (sessionStorage.getItem("currentUser") !== undefined) {
         user = sessionStorage.getItem("currentUser");
@@ -529,7 +530,10 @@ class App extends React.Component {
 
       // End of if statement
     }
+    // End of render function
   }
+
+  // End of app class component
 }
 
 // Export component so it can be used by index.js

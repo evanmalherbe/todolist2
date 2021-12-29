@@ -15,11 +15,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Import custom stylesheet
 import "../App.css";
 
-// Function to display buttons to list all cars or only cars older than 5 years
+// Function to display header - includes login form
 function Header(props) {
   let displayLoginForm;
-  //console.log("Login status is: " + props.loggedIn);
 
+  /* If statement to display login form if user not yet logged in, or welcome msg if they are logged in. Includes logout button */
   if (props.loggedIn === false || props.loggedIn === "") {
     displayLoginForm = (
       <LoginForm
@@ -49,4 +49,5 @@ function Header(props) {
   );
 }
 
+// Export component to be used in other files
 export default Header;

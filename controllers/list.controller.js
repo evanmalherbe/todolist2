@@ -5,13 +5,12 @@ const List = require("../models/list.model.js");
 
 // Add new list item to collection
 exports.create = function (req, res) {
-  // Get form info from req.body and add to new Car model
   let listModel = new List({
     user: req.body.user,
     item: req.body.item,
   });
 
-  // Save new car to collection
+  // Save new list item to collection
   listModel.save(function (err, data) {
     if (err) {
       console.log(err);
@@ -25,6 +24,7 @@ exports.create = function (req, res) {
   });
 };
 
+// Retrieve all list items
 exports.findAll = function (req, res) {
   List.find({}, function (err, list) {
     if (err) {
@@ -33,6 +33,7 @@ exports.findAll = function (req, res) {
         .status(500)
         .send({ message: "Some error occurred while retrieving list." });
     } else {
+      // Process result by pushing items to an array - separate arrays for list items, usernames and id's
       let listItems = [];
       let listIdArray = [];
       let listUserArray = [];
@@ -52,16 +53,21 @@ exports.findAll = function (req, res) {
         listIdArray.push(result._id);
       });
 
+      // Send arrays to frontend
       res.json({
         message: `${listItems}`,
         id: `${listIdArray}`,
         user: `${listUserArray}`,
       });
+
+      // End of if statement
     }
   });
+
+  // End of findall function
 };
 
-// Delete list item
+// Delete list item (uses id to delete only one specific item)
 exports.deleteListItem = function (req, res) {
   List.findOneAndRemove({ _id: req.body.id }, function (err) {
     if (err) {

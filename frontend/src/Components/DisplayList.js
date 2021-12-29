@@ -11,6 +11,7 @@ import "../App.css";
 
 // Function to display list of items for the currently logged in user
 function DisplayList(props) {
+  // Make variables easier to deal with - shorter names
   let data = props.listItems;
   let idData = props.idArray;
   let userData = props.userArray;
@@ -24,6 +25,10 @@ function DisplayList(props) {
 
   let displayItems = [];
 
+  // ---------------------------------------------- //
+
+  /* For loop to populate an array with divs for each list item - includes "delete" button for each item. Delete button passes id of list item along to handler function so it can delete the correct item from the
+   db */
   for (let i = 0; i <= arrayData.length - 1; i++) {
     if (arrayUser[i] === props.currentUser) {
       displayItems.push(
@@ -40,6 +45,7 @@ function DisplayList(props) {
     }
   }
 
+  // Display message if user has no list items stored yet
   if (displayItems.length === 0) {
     displayItems.push(<div className="redDiv">No items saved yet.</div>);
   }
@@ -52,4 +58,5 @@ function DisplayList(props) {
   );
 }
 
+// Export component
 export default DisplayList;

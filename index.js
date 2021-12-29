@@ -1,15 +1,13 @@
+// Import required depedencies
 const express = require("express");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-
-// import mongoose
 const mongoose = require("mongoose");
-
 const path = require("path");
 const app = express();
 
-// Use bodyparser
+// Use bodyparser to send data in body of http request
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
@@ -76,6 +74,7 @@ mongoose.connection.once("open", function () {
   console.log("Successfully connected to the database");
 });
 
+// Set port number
 const PORT = process.env.PORT || 8001;
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);

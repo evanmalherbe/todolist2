@@ -1,3 +1,4 @@
+// Route to authenticate user by verifying their jwt token
 module.exports = function (app) {
   const jwt = require("jsonwebtoken");
 

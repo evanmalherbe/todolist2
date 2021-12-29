@@ -1,4 +1,6 @@
-/* Styles for To do list task - Level 2 - task 10 - Compulsory task 2 */
+/* Styles for To do list task - Level 3 - task 9 - To do list */
+
+/* Misc styles */
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -14,6 +16,7 @@ body {
 .redPara, .redHeading, .redDiv {
   color: red;
 }
+/* -------------------------------------------------------------------- */
 
 /* Heading tag for to do list*/
 .toDoDiv h1 {
@@ -22,16 +25,14 @@ body {
   color: green;
 }
 
-/* Header for page. Position elements on page with Flexbox */
+/* Styles for Header section of page. Position elements on page with Flexbox */
 .header {
   background-color: white;
   height: 5rem;
-
   display: flex;
   flex-direction: row;
   align-items: center;
   color: black;
-
   border-bottom: 1px solid #dedede;
 }
 
@@ -62,9 +63,6 @@ body {
 .row {
   display: flex;
   flex-direction: row;
-
-  /* border: 1px solid red; */
-
   padding: 1rem;
   width: 60rem;
 }
@@ -74,7 +72,6 @@ body {
   border: 1px solid #dedede;
   width: 30rem;
   margin: 1rem;
-  
   padding: 0.5rem;
 }
 
@@ -90,14 +87,9 @@ body {
 .loginFormDiv {
   display: flex;
   flex-direction: row;
- 
 }
 
-.row {
-  width: 60rem;
-  
-}
-
+/* Button styles */
 .loginButton {
   width: 6rem;
 }
@@ -114,15 +106,14 @@ body {
   margin-top: 0.5rem;
 }
 
+/* Styles for to do list */
 .list {
   flex: 1;
   width: 30rem;
   padding: 0.5rem;
-
   border: 1px solid #dedede;
 }
 
-/* Styles for to do list container */
 .toDoDiv {
   display: flex;
   flex-direction: column;
@@ -131,14 +122,13 @@ body {
   margin-left: auto;
   margin-right: auto;
   padding: 1rem 2rem 2rem 2rem;
-
 }
 
+/* individual list item */
 .listItemDiv {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   border: 1px solid #dedede;
   padding: 0.5rem;
   margin: 0.2rem;

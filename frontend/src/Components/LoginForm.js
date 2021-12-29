@@ -10,7 +10,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // Import custom stylesheet
 import "../App.css";
 
-// Function to display login form in header
+// Function to display login form in header. Uses React bootstrap
 function LoginForm(props) {
   return (
     <div className="loginFormDiv">
@@ -66,7 +66,11 @@ function LoginForm(props) {
 
       {/* End of loginFormDiv*/}
     </div>
+
+    // End of return
   );
+
+  // End of loginform function
 }
 
 // Export component so it can be used by other components

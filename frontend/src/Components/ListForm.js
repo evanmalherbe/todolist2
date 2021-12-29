@@ -4,7 +4,7 @@ import React from "react";
 import { Form, FormControl, FormLabel } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 
-/* Create class component*/
+/* Function to display form to add items to to do list */
 function ListForm(props) {
   return (
     <div className="form">
