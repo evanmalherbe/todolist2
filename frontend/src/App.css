@@ -60,50 +60,52 @@ body {
   display: inline;
 }
 
-.row {
-  display: flex;
-  flex-direction: row;
-  padding: 1rem;
-  width: 60rem;
-}
-
-.form {
-  flex: 1;
-  border: 1px solid #dedede;
-  width: 30rem;
-  margin: 1rem;
-  padding: 0.5rem;
-}
-
-.form-group {
-  margin-bottom: 0.5rem;
-}
-
-.loginFormGroup {
-  display: flex;
-  flex-direction: row;
-}
-
 .loginFormDiv {
   display: flex;
   flex-direction: row;
+  margin-left: auto;
+}
+
+.loginForm {
+  margin-right: 1rem;
+}
+
+/* End of header styles ----------------------------------------------- */
+
+/* Body section styles */
+.formAndListDiv {
+  display: flex;
+  flex-direction: row;
+  width: 60rem;
+  padding: 1rem;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Div for form to add items to to do list */
+.form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 1rem;
+  padding: 1rem;
+}
+
+.addItemInput {
+  margin-bottom: 0.5rem;
+}
+
+.pleaseLogin {
+  margin-left: 1rem;
+  margin-top: 1rem;
 }
 
 /* Button styles */
-.loginButton {
+.buttons {
   width: 6rem;
-}
-
-.registerButton {
-  width: 6rem;
-}
-
-.addInput {
-  width: 40rem;
-}
-
-.form-group Button {
-  margin-top: 0.5rem;
 }
 
 /* Styles for to do list */
@@ -111,10 +113,9 @@ body {
   flex: 1;
   width: 30rem;
   padding: 0.5rem;
-  border: 1px solid #dedede;
 }
 
-.toDoDiv {
+/* .toDoDiv {
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -122,7 +123,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   padding: 1rem 2rem 2rem 2rem;
-}
+} */
 
 /* individual list item */
 .listItemDiv {

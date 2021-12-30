@@ -23,26 +23,34 @@ function DisplayList(props) {
   let arrayId = idData.split(",");
   let arrayUser = userData.split(",");
 
+  let thisUserItems = [];
+  let thisUserIds = [];
   let displayItems = [];
 
   // ---------------------------------------------- //
 
-  /* For loop to populate an array with divs for each list item - includes "delete" button for each item. Delete button passes id of list item along to handler function so it can delete the correct item from the
-   db */
+  // Loop to add only the list items belonging to the currently logged in user to an array
   for (let i = 0; i <= arrayData.length - 1; i++) {
     if (arrayUser[i] === props.currentUser) {
-      displayItems.push(
-        <div className="listItemDiv" key={i}>
-          {arrayData[i]}{" "}
-          <Button
-            variant="danger"
-            onClick={() => props.handleDeleteItem(arrayId[i])}
-          >
-            X
-          </Button>
-        </div>
-      );
+      thisUserItems.push(arrayData[i]);
+      thisUserIds.push(arrayId[i]);
     }
+  }
+
+  /* For loop to populate an array with divs for each list item - includes "delete" button for each item. Delete button passes id of list item along to handler function so it can delete the correct item from the
+   db */
+  for (let i = 0; i <= thisUserItems.length - 1; i++) {
+    displayItems.push(
+      <div className="listItemDiv" key={i}>
+        {i + 1}.&nbsp; {thisUserItems[i]}{" "}
+        <Button
+          variant="danger"
+          onClick={() => props.handleDeleteItem(thisUserIds[i])}
+        >
+          X
+        </Button>
+      </div>
+    );
   }
 
   // Display message if user has no list items stored yet

@@ -32,7 +32,7 @@ function Header(props) {
   } else {
     displayLoginForm = (
       <div className="loggedInDiv">
-        Welcome back,&nbsp;<b>{props.currentUser}</b>! &nbsp;
+        Welcome back,&nbsp;<b>{props.currentUser}</b>! &nbsp; &nbsp; &nbsp;
         <Button variant="primary" type="button" onClick={props.handleLogout}>
           Log out
         </Button>

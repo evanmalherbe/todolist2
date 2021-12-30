@@ -487,7 +487,7 @@ class App extends React.Component {
             loggedIn={loggedIn}
             handleLogout={this.handleLogout}
           />
-          <div className="row">
+          <div className="pleaseLogin">
             <h2 className="redHeading">Please log in</h2>
           </div>
         </div>
@@ -511,7 +511,7 @@ class App extends React.Component {
             loggedIn={loggedIn}
             handleLogout={this.handleLogout}
           />
-          <div className="row">
+          <div className="formAndListDiv">
             <ListForm
               handleAddItem={this.handleAddItem}
               handleItemToAdd={this.handleItemToAdd}

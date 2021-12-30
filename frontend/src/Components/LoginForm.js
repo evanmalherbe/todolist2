@@ -2,7 +2,7 @@ import React from "react";
 
 // Import React Bootstrap components
 import Button from "react-bootstrap/Button";
-import { Form, FormControl, FormLabel, Col, Row } from "react-bootstrap";
+import { Form, FormControl, Col, Row } from "react-bootstrap";
 
 // Import bootstrap styles
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,34 +16,27 @@ function LoginForm(props) {
     <div className="loginFormDiv">
       {/* Learned how to turn autocomplete off here: 
       https://reactgo.com/react-turn-off-autocomplete/ */}
-      <Form id="loginForm" autoComplete="off">
-        <Row className="row">
-          <Col className="addInput">
-            <FormLabel> Username: </FormLabel>
-          </Col>
-          <Col className="addInput">
+      <Form id="loginForm" autoComplete="off" className="loginForm">
+        <Row>
+          <Col className="col-4">
             <FormControl
               type="text"
               name="toAdd"
-              placeholder="..."
+              placeholder="Enter username"
               onChange={props.handleUsername}
             />{" "}
           </Col>
-          <Col>
-            <FormLabel> Password: </FormLabel>
-          </Col>
-          <Col>
+          <Col className="col-4">
             <FormControl
               type="text"
-              className="addInput"
               name="toAdd"
-              placeholder="..."
+              placeholder="Enter password"
               onChange={props.handlePassword}
             />{" "}
           </Col>
-          <Col>
+          <Col className="col-2">
             <Button
-              className="loginButton"
+              className="buttons"
               variant="primary"
               type="button"
               onClick={props.handleLogin}
@@ -51,11 +44,11 @@ function LoginForm(props) {
               Login
             </Button>
           </Col>
-          <Col>
+          <Col className="col-2">
             <Button
+              className="buttons"
               variant="primary"
               type="button"
-              className="registerButton"
               onClick={props.handleRegister}
             >
               Register
