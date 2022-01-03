@@ -52,7 +52,7 @@ https://stackoverflow.com/questions/65896414/how-can-i-use-environmental-variabl
 let pword = process.env.PASSWORD;
 let collection = "lists";
 
-//Uri for connecting to database from MongoDB Atlas>Connect
+// Uri for connecting to database from MongoDB Atlas>Connect
 const uri = `mongodb+srv://evanmalherbe:${pword}@cluster0.xrjxb.mongodb.net/${collection}?retryWrites=true&w=majority`;
 
 mongoose.Promise = global.Promise;
