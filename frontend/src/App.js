@@ -40,6 +40,8 @@ class App extends React.Component {
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
     this.handleRegister = this.handleRegister.bind(this);
+    this.handleAuth = this.handleAuth.bind(this);
+    this.getList = this.getList.bind(this);
 
     this.handleItemToAdd = this.handleItemToAdd.bind(this);
     this.handleAddItem = this.handleAddItem.bind(this);
@@ -56,12 +58,13 @@ class App extends React.Component {
         isLoaded: false,
         username: null,
         password: null,
+        currentUser: null,
         item: null,
+        token: null,
+        message: null,
       },
       () => {
         console.log("User logged out.");
-        sessionStorage.setItem("loggedIn", false);
-        sessionStorage.setItem("currentUser", null);
         this.reloadList();
       }
     );
@@ -102,9 +105,34 @@ class App extends React.Component {
   }
   // --------------------------------------------------------- //
 
+  getList() {
+    if (this.state.message === "Success! Token valid.") {
+      console.log("Get list has run");
+      fetch("/getList")
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              items: result.items,
+              idArray: result.id,
+              userArray: result.user,
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+    }
+  }
+
   /* Takes token created in "handleLogin" function and authenticates user */
-  handleAuth(token) {
-    if (token !== "Incorrect login!") {
+  handleAuth() {
+    let token = this.state.token;
+    if (token !== undefined && token !== "Incorrect login!" && token !== null) {
       fetch("/resource", {
         method: "GET",
         headers: {
@@ -117,10 +145,10 @@ class App extends React.Component {
           (result) => {
             this.setState(
               {
-                message: result.message,
-                isLoaded: false,
+                isLoaded: true,
                 loggedIn: true,
-                currentUser: result.message,
+                currentUser: result.currentUser,
+                message: result.message,
                 username: null,
                 password: null,
               },
@@ -128,9 +156,7 @@ class App extends React.Component {
                 console.log(
                   "handleAuth has run. Welcome, " + this.state.currentUser
                 );
-                sessionStorage.setItem("loggedIn", true);
-                sessionStorage.setItem("currentUser", this.state.currentUser);
-                this.reloadList();
+                this.getList();
               }
             );
           },
@@ -143,9 +169,11 @@ class App extends React.Component {
     } else {
       /* Learned to clear/reset form here:
       https://stackoverflow.com/questions/3786694/how-to-reset-clear-form-through-javascript */
+
       document.forms["loginForm"].reset();
       alert("Incorrect login details. Please try again.");
       console.log("Invalid token. Not logged in.");
+
       this.reloadList();
     }
     // End of handleauth function
@@ -176,9 +204,9 @@ class App extends React.Component {
               },
               () => {
                 console.log(
-                  "Login details sent via post. Token is " + result.message
+                  "Login details sent via post. Token is " + this.state.token
                 );
-                this.handleAuth(this.state.token);
+                this.handleAuth();
               }
             );
           },
@@ -358,25 +386,6 @@ class App extends React.Component {
     if (this.state.isLoaded === false) {
       console.log("Reload list has run.");
 
-      fetch("/getList")
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            this.setState({
-              isLoaded: true,
-              items: result.message,
-              idArray: result.id,
-              userArray: result.user,
-            });
-          },
-          (error) => {
-            this.setState({
-              isLoaded: true,
-              error,
-            });
-          }
-        );
-
       // Retrieve usernames and passwords from database
       fetch("/getLogins")
         .then((res) => res.json())
@@ -386,6 +395,7 @@ class App extends React.Component {
               {
                 users: result.users,
                 pwords: result.pwords,
+                isLoaded: true,
               },
               () => {
                 console.log("Logins retrieved from db.");
@@ -394,11 +404,12 @@ class App extends React.Component {
           },
           (error) => {
             this.setState({
-              isLoaded: true,
               error,
             });
           }
         );
+
+      this.getList();
 
       // End of if statement to check if list of items has been loaded yet.
     }
@@ -410,34 +421,6 @@ class App extends React.Component {
     if (this.state.isLoaded === false) {
       console.log("componentDidMount - Load list has run.");
 
-      // Retrieve list items from database
-      fetch("/getList")
-        .then((res) => res.json())
-        .then(
-          (result) => {
-            this.setState(
-              {
-                isLoaded: true,
-                items: result.message,
-                idArray: result.id,
-                userArray: result.user,
-              },
-              () => {
-                if (sessionStorage.getItem("loggedIn") === undefined) {
-                  sessionStorage.setItem("loggedIn", false);
-                  console.log("Session storage - login status set to false");
-                }
-              }
-            );
-          },
-          (error) => {
-            this.setState({
-              isLoaded: true,
-              error,
-            });
-          }
-        );
-
       // Retrieve usernames and passwords from database
       fetch("/getLogins")
         .then((res) => res.json())
@@ -447,6 +430,7 @@ class App extends React.Component {
               {
                 users: result.users,
                 pwords: result.pwords,
+                isLoaded: true,
               },
               () => {
                 console.log("Logins retrieved from db.");
@@ -466,15 +450,21 @@ class App extends React.Component {
   }
 
   render() {
-    const { error, isLoaded, items, loggedIn, username, idArray, userArray } =
-      this.state;
+    const {
+      error,
+      isLoaded,
+      items,
+      loggedIn,
+      currentUser,
+      idArray,
+      userArray,
+    } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
     } else if (
       // if user not yet logged in, only show login form, no to do list
-      sessionStorage.getItem("loggedIn") === false ||
       this.state.loggedIn === false
     ) {
       return (
@@ -494,16 +484,10 @@ class App extends React.Component {
       );
     } else {
       // Else if user is logged in, then show form and to do list for that user
-      let user;
-      if (sessionStorage.getItem("currentUser") !== undefined) {
-        user = sessionStorage.getItem("currentUser");
-      } else {
-        user = username;
-      }
       return (
         <div className="app">
           <Header
-            currentUser={user}
+            currentUser={currentUser}
             handleLogin={this.handleLogin}
             handleRegister={this.handleRegister}
             handleUsername={this.handleUsername}
@@ -518,7 +502,7 @@ class App extends React.Component {
               handleDeleteItem={this.handleDeleteItem}
             />
             <DisplayList
-              currentUser={user}
+              currentUser={currentUser}
               listItems={items}
               idArray={idArray}
               userArray={userArray}

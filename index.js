@@ -47,31 +47,41 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+// Auth details for connecting to db
+const username = "evanmalherbe";
+
 /* Get password from .env file. Needed to consult the following website to get it to work: 
 https://stackoverflow.com/questions/65896414/how-can-i-use-environmental-variable-for-database-password-in-nodejs */
-let pword = process.env.PASSWORD;
-let collection = "lists";
-
-// Uri for connecting to database from MongoDB Atlas>Connect
-const uri = `mongodb+srv://evanmalherbe:${pword}@cluster0.xrjxb.mongodb.net/${collection}?retryWrites=true&w=majority`;
+const password = process.env.PASSWORD;
+const cluster = "cluster0.xrjxb";
+const dbname = "lists";
 
 mongoose.Promise = global.Promise;
 
-/* Really struggled to connect to the database initially, until I read this website:
-   https://mongoosejs.com/docs/connections.html
-   and figured out that the "useMongoClient: true" option was causing it not to connect, as it is "not supported". Removed the option and now it works. */
-mongoose.connect(uri);
+/* This website was very useful in getting the connection and error handling commands right:
+https://mongoosejs.com/docs/connections.html */
 
-// Message if could not connect to db
-mongoose.connection.on("error", function () {
-  console.log("Connection to Mongo established.");
-  console.log("Could not connect to the database. Exiting now...");
-  process.exit();
-});
+// Initial connection to db and error handling if initial connection fails
+mongoose
+  .connect(
+    `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`
+  )
+  .catch((error) =>
+    console.log("Failed initial connection to db. Error is: " + error)
+  );
 
 // Message if success in connecting to db
 mongoose.connection.once("open", function () {
   console.log("Successfully connected to the database");
+});
+
+// Error handling if connection to db fails after an initially successful connection
+mongoose.connection.on("error", (error) => {
+  if (error) {
+    console.log("An error occurred after initial connection to db: " + error);
+  } else {
+    console.log("Connection Established");
+  }
 });
 
 // Set port number

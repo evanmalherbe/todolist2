@@ -55,7 +55,7 @@ exports.findAll = function (req, res) {
 
       // Send arrays to frontend
       res.json({
-        message: `${listItems}`,
+        items: `${listItems}`,
         id: `${listIdArray}`,
         user: `${listUserArray}`,
       });
