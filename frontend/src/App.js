@@ -105,6 +105,7 @@ class App extends React.Component {
   }
   // --------------------------------------------------------- //
 
+  // Retrieve list items from db if token is valid
   getList() {
     if (this.state.message === "Success! Token valid.") {
       console.log("Get list has run");
