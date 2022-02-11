@@ -17,13 +17,6 @@ app.set("view engine", "pug");
 
 app.use(express.static(path.join(__dirname, "public")));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "frontend/build")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
-  });
-}
-
 // Set path to .env file
 dotenv.config({ path: ".env" });
 
@@ -91,6 +84,13 @@ mongoose.connection.on("error", (error) => {
     console.log("Connection Established");
   }
 });
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "frontend/build")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"));
+  });
+}
 
 // Set port number
 const PORT = process.env.PORT || 8001;
