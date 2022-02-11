@@ -19,8 +19,11 @@ These were the instructions I was given to guide me in this task:
 **Follow these steps:**
 
 - You have previously created a simple to-do app using React where a user could add a number of items that get displayed as a to-do list. The user could also delete a specific item from the list.
+
 - Modify this task so that a user is required to log in to your application before they can use it by entering a username and password for your app directly.
+
 - Each users’ to-do list should be saved to a database. When a user logs in they should only be able to see and modify their own to-do list. The user’s to-do list should be preserved between sessions.
+
 - Please remember to use JWT as demonstrated in this task.
 
 ### Technologies
