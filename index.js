@@ -21,13 +21,13 @@ app.use(express.static(path.join(__dirname, "public")));
 dotenv.config({ path: ".env" });
 
 //Import routes
-require("./routes1/display.js")(app);
-require("./routes1/add.js")(app);
-require("./routes1/delete.js")(app);
-require("./routes1/login.js")(app);
-require("./routes1/getLogins.js")(app);
-require("./routes1/register.js")(app);
-require("./routes1/resource.js")(app);
+require("./routes/display.js")(app);
+require("./routes/add.js")(app);
+require("./routes/delete.js")(app);
+require("./routes/login.js")(app);
+require("./routes/getLogins.js")(app);
+require("./routes/register.js")(app);
+require("./routes/resource.js")(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
