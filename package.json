@@ -21,9 +21,7 @@
     "jsonwebtoken": "8.5.1",
     "mongoose": "6.1.2",
     "path": "0.12.7",
-    "pug": "3.0.2"
-  },
-  "devDependencies": {
+    "pug": "3.0.2",
     "nodemon": "2.0.15"
   }
 }
