@@ -4,6 +4,8 @@
 
 This task involved taking a simple "To Do list" project from earlier in the course and modifying it to save the user's to do list to a MongoDB database so that it persists from session to session and also to add user authentication with JWT (JSON Web Tokens). A user can log in, add items to their to do list and delete items as well.
 
+This app has been deployed with [https://www.heroku.com/platform](Heroku) to: [https://evanstodolist.herokuapp.com/](https://evanstodolist.herokuapp.com/).
+
 ## Table of Contents
 
 - [Instructions](#instructions)
@@ -108,4 +110,4 @@ Figure 9
 
 ## Credits
 
-This project was created by Evan Malherbe as part of a task for HyperioDev Full Stack Development Bootcamp - December 2021 [GitHub profile](https://github.com/evanmalherbe)
+This project was created by Evan Malherbe as part of a task for HyperionDev Full Stack Development Bootcamp - December 2021 [GitHub profile](https://github.com/evanmalherbe)
