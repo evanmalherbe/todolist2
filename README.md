@@ -4,7 +4,7 @@
 
 This task involved taking a simple "To Do list" project from earlier in the course and modifying it to save the user's to do list to a MongoDB database so that it persists from session to session and also to add user authentication with JWT (JSON Web Tokens). A user can log in, add items to their to do list and delete items as well.
 
-This app has been deployed with [Heroku](https://www.heroku.com/platform) to: [https://evanstodolist.herokuapp.com/](https://evanstodolist.herokuapp.com/).
+(**Update as at 4 Oct 2025**: Heroku no longer offers their free tier, so this link is dead. I will find somewhere else to deploy this project soon). ~~This app has been deployed with [Heroku](https://www.heroku.com/platform) to: https://evanstodolist.herokuapp.com/(https://evanstodolist.herokuapp.com/).~~
 
 ## Table of Contents
 
