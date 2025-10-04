@@ -56,7 +56,7 @@ const username = "evanmalherbe_db_user";
 https://stackoverflow.com/questions/65896414/how-can-i-use-environmental-variable-for-database-password-in-nodejs */
 const password = process.env.PASSWORD;
 const cluster = "Cluster0";
-const dbname = "lists";
+const dbname = "todolist_db";
 
 mongoose.Promise = global.Promise;
 
