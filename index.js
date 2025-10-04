@@ -99,8 +99,9 @@ app.get("*", function (request, response) {
   response.sendFile(path.resolve(__dirname, "frontend/build", "index.html"));
 });
 
+module.exports = app;
 // Set port number
-const PORT = process.env.PORT || 8001;
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+// const PORT = process.env.PORT || 8001;
+// app.listen(PORT, () => {
+//   console.log(`Server is listening on port ${PORT}`);
+// });
